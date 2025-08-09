@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Books Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1><i class="fas fa-book"></i> Books Management System</h1>
+            <p>Manage your book collection with ease</p>
+        </header>
+
+        <!-- Add Book Form -->
+        <section class="add-book-section">
+            <h2><i class="fas fa-plus"></i> Add New Book</h2>
+            <form id="addBookForm" class="book-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="title">Title *</label>
+                        <input type="text" id="title" name="title" required placeholder="Enter book title">
+                    </div>
+                    <div class="form-group">
+                        <label for="author">Author *</label>
+                        <input type="text" id="author" name="author" required placeholder="Enter author name">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="year">Year</label>
+                        <input type="number" id="year" name="year" placeholder="Enter publication year">
+                    </div>
+                    <div class="form-group">
+                        <label for="genre">Genre</label>
+                        <input type="text" id="genre" name="genre" placeholder="Enter genre">
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add Book
+                </button>
+            </form>
+        </section>
+
+        <!-- Filters -->
+        <section class="filters-section">
+            <h3><i class="fas fa-filter"></i> Filters</h3>
+            <div class="filters">
+                <div class="filter-group">
+                    <label for="authorFilter">Filter by Author:</label>
+                    <input type="text" id="authorFilter" placeholder="Enter author name">
+                </div>
+                <div class="filter-group">
+                    <label for="genreFilter">Filter by Genre:</label>
+                    <input type="text" id="genreFilter" placeholder="Enter genre">
+                </div>
+                <div class="filter-group">
+                    <label for="limitFilter">Limit Results:</label>
+                    <select id="limitFilter">
+                        <option value="">All</option>
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                    </select>
+                </div>
+                <button id="applyFilters" class="btn btn-secondary">
+                    <i class="fas fa-search"></i> Apply Filters
+                </button>
+                <button id="clearFilters" class="btn btn-outline">
+                    <i class="fas fa-times"></i> Clear
+                </button>
+            </div>
+        </section>
+
+        <!-- Books List -->
+        <section class="books-section">
+            <div class="section-header">
+                <h2><i class="fas fa-list"></i> Books List</h2>
+                <div class="actions">
+                    <button id="refreshBooks" class="btn btn-secondary">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                    <button id="deleteAllBooks" class="btn btn-danger">
+                        <i class="fas fa-trash"></i> Delete All
+                    </button>
+                </div>
+            </div>
+            
+            <div id="loadingSpinner" class="loading-spinner" style="display: none;">
+                <div class="spinner"></div>
+                <p>Loading books...</p>
+            </div>
+
+            <div id="booksList" class="books-list">
+                <!-- Books will be dynamically added here -->
+            </div>
+
+            <div id="noBooksMessage" class="no-books" style="display: none;">
+                <i class="fas fa-book-open"></i>
+                <h3>No books found</h3>
+                <p>Add your first book using the form above!</p>
+            </div>
+        </section>
+
+        <!-- Statistics -->
+        <section class="stats-section">
+            <div class="stats">
+                <div class="stat-card">
+                    <i class="fas fa-books"></i>
+                    <h3 id="totalBooks">0</h3>
+                    <p>Total Books</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-user"></i>
+                    <h3 id="uniqueAuthors">0</h3>
+                    <p>Unique Authors</p>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-tags"></i>
+                    <h3 id="uniqueGenres">0</h3>
+                    <p>Genres</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Edit Book Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-edit"></i> Edit Book</h3>
+                <button class="close-btn" id="closeModal">&times;</button>
+            </div>
+            <form id="editBookForm" class="book-form">
+                <input type="hidden" id="editBookId">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editTitle">Title *</label>
+                        <input type="text" id="editTitle" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editAuthor">Author *</label>
+                        <input type="text" id="editAuthor" name="author" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editYear">Year</label>
+                        <input type="number" id="editYear" name="year">
+                    </div>
+                    <div class="form-group">
+                        <label for="editGenre">Genre</label>
+                        <input type="text" id="editGenre" name="genre">
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save"></i> Save Changes
+                    </button>
+                    <button type="button" class="btn btn-outline" id="cancelEdit">
+                        <i class="fas fa-times"></i> Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <div class="notification-content">
+            <i class="notification-icon"></i>
+            <span class="notification-message"></span>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
